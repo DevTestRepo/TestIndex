@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Create Event</title>
+</head>
+<body>
+
+<h2>Create Event</h2>
+
+<form id="eventForm">
+  <label for="eventTitle">Event Title:</label>
+  <input type="text" id="eventTitle" required><br>
+
+  <label for="eventDescription">Event Description:</label>
+  <textarea id="eventDescription" required></textarea><br>
+
+  <label for="eventDate">Event Date:</label>
+  <input type="datetime-local" id="eventDate" required><br>
+
+  <button type="button" onclick="addEvent()">Add to Calendar</button>
+</form>
+
+<script>
+function addEvent() {
+  const title = document.getElementById('eventTitle').value;
+  const description = document.getElementById('eventDescription').value;
+  const date = document.getElementById('eventDate').value;
+
+  const eventData = {
+    title: title,
+    text: description,
+    start: new Date(date),
+  };
+
+  if (navigator.canShare && navigator.canShare({ files: [] })) {
+    navigator.share({
+      title: 'Event Details',
+      text: `Title: ${eventData.title}\nDescription: ${eventData.text}\nDate: ${eventData.start}`,
+    })
+    .then(() => console.log('Event shared successfully'))
+    .catch((error) => console.error('Error sharing event:', error));
+  } else {
+    alert('Your device does not support the Web Calendar API. Please open the calendar manually.');
+  }
+}
+</script>
+
+</body>
+</html>
